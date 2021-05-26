@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O aplikaciji"
+        android:textSize="25sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aplikacijo sva razvila\nMatjaž Bevc in\nEva Vidmar
+        \nv okviru predmeta Terminalske naprave
+        \nin uporabniški vmesniki na
+        \nFakulteti za elektrotehniko."
+        android:textSize="15sp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aplikacija nudi lokalno in celotno
+        \nsliko o epidemiji COVID-19 v Sloveniji na
+        \ninovativen in karseda pozitiven način.
+        \n
+        \n
+        \n
+        \nZa možnost izdelave te aplikacije se
+        \nzahvaljujeva ustvarjalcem spletne strani
+        \nCovid sledilnik, ki so razvili REST Api,
+        \nkaterega sva uporabila v najini aplikaciji."
+        android:textSize="15sp"
+        android:layout_marginTop="370dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/black"
+        />
+
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_navigation"
+        app:itemBackground="@color/modra"
+        android:background="@color/modra"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"
+        app:menu="@menu/menu_navigation"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

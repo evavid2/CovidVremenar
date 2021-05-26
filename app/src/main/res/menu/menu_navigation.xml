@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mojaobcina"
+        android:icon="@drawable/ic_home"
+        android:title="Moja občina"
+        />
+
+    <item
+        android:id="@+id/slovenija"
+        android:icon="@drawable/ic_slovenia"
+        android:title="Slovenija" />
+
+
+    <item
+        android:id="@+id/ukrepi"
+        android:icon="@drawable/ic_ukrepi"
+        android:title="Ukrepi" />
+
+    <item
+        android:id="@+id/about"
+        android:title="O aplikaciji"
+        android:icon="@drawable/ic_info"/>
+</menu>

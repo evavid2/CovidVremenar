@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Covid\nVremenar</string>
+    <string name="pozdravljeni_v_aplikaciji_covid_vremenar">Pozdravljeni v aplikaciji COVID Vremenar!</string>
+    <string name="podpis">Aplikacija nudi lokalno in celotno sliko o epidemiji COVID-19 v Sloveniji.</string>
+    <string name="gumb_pozdravni">ZAČNIMO</string>
+</resources>
