@@ -12,6 +12,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
         <activity android:name=".PozdravniZaslonActivity" />
+        <activity android:name=".ProsnjaZaLokacijoActivity"></activity>
         <activity android:name=".UkrepiActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".SlovenijaActivity" />
