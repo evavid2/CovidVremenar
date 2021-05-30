@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity android:name=".ProsnjaZaLokacijoActivity"></activity>
         <activity android:name=".UkrepiActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".SlovenijaActivity" />

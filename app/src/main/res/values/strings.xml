@@ -10,4 +10,6 @@
     <string name="stevilo_prebivalcev">16.402</string>
     <string name="st_potrjenih_priimerov">55</string>
     <string name="procent_tedenskega_prirasta">+10%</string>
+    <string name="besedilo_prosnja_lokacije1">Za učinkovitejšo uporabo aplikacije je potreben dostop do lokacije.</string>
+    <string name="prosnja_za_lokacijo_vprasanje">Ali dovoljuješ aplikaciji deljenje svoje lokacije?</string>
 </resources>
