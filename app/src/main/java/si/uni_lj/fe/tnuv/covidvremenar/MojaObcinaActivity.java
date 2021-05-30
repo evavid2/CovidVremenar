@@ -4,20 +4,64 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONArray;
 
 public class MojaObcinaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidNetworking.initialize(getApplicationContext());
+
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            //show start activity
+
+            startActivity(new Intent(MojaObcinaActivity.this, PozdravniZaslonActivity.class));
+            //Toast.makeText(MojaObcinaActivity.this, "First Run", Toast.LENGTH_LONG)
+                    //.show();
+        }
+
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).apply();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moja_obcina);
+
+        AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.i("uspeh", response.toString());
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        Log.e("napaka","Ne morem dobiti seznama občin");
+
+                    }
+                });
+
         //nastavljanje barve teksta za tedenski prirast, če gre gor je rdeče, če gre dol je zeleno, ter slike, če gre gor je dež, če gre dol je sonce
         TextView tedenskiPrirast =(TextView)findViewById(R.id.textView8);
         ImageView slikaVremena = (ImageView)findViewById(R.id.imageView10);
