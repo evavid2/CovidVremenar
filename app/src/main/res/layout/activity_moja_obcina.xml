@@ -27,4 +27,97 @@
         app:menu="@menu/menu_navigation"
         android:layout_alignParentBottom="true"
         />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ime_občine"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="70dp"/>
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="191dp"
+        android:layout_height="353dp"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="130dp"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prebivalci"
+        android:layout_centerVertical="true"
+        android:paddingTop="100dp"
+        android:paddingLeft="80dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/potrjeni_primeri"
+        android:layout_centerVertical="true"
+        android:paddingTop="200dp"
+        android:paddingLeft="80dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tedenski_prirast"
+        android:layout_centerVertical="true"
+        android:paddingTop="300dp"
+        android:paddingLeft="80dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="180dp"
+        android:layout_centerVertical="true"
+        android:paddingTop="100dp"
+        android:text="@string/stevilo_prebivalcev"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="180dp"
+        android:layout_centerVertical="true"
+        android:paddingTop="200dp"
+        android:text="@string/st_potrjenih_priimerov"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="180dp"
+        android:layout_centerVertical="true"
+        android:paddingTop="300dp"
+        android:text="@string/procent_tedenskega_prirasta"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
 </RelativeLayout>
