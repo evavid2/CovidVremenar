@@ -3,11 +3,11 @@
     <string name="pozdravljeni_v_aplikaciji_covid_vremenar">Pozdravljeni v aplikaciji COVID Vremenar!</string>
     <string name="podpis">Aplikacija nudi lokalno in celotno sliko o epidemiji COVID-19 v Sloveniji.</string>
     <string name="gumb_pozdravni">ZAČNIMO</string>
-    <string name="ime_občine">Zagorje ob Savi</string>
+    <string name="ime_občine">Ime občine</string>
     <string name="prebivalci">Prebivalcev:</string>
     <string name="potrjeni_primeri">Potrjeni primeri:</string>
     <string name="tedenski_prirast">Tedenski prirast:</string>
-    <string name="stevilo_prebivalcev">16.402</string>
+    <integer name="stevilo_prebivalcev">16402</integer>
     <string name="st_potrjenih_priimerov">55</string>
     <string name="procent_tedenskega_prirasta">+10%</string>
     <string name="besedilo_prosnja_lokacije1">Za učinkovitejšo uporabo aplikacije je potreben dostop do lokacije.</string>

@@ -90,7 +90,7 @@
         android:paddingLeft="180dp"
         android:layout_centerVertical="true"
         android:paddingTop="100dp"
-        android:text="@string/stevilo_prebivalcev"
+        android:text="@integer/stevilo_prebivalcev"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold" />
