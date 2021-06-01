@@ -46,7 +46,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moja_obcina);
 
-        AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
+ /*       AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
                 .setTag("test")
                 .setPriority(Priority.LOW)
                 .build()
@@ -61,7 +61,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
 
                     }
                 });
-
+*/
         //nastavljanje barve teksta za tedenski prirast, če gre gor je rdeče, če gre dol je zeleno, ter slike, če gre gor je dež, če gre dol je sonce
         TextView tedenskiPrirast =(TextView)findViewById(R.id.textView8);
         ImageView slikaVremena = (ImageView)findViewById(R.id.imageView10);

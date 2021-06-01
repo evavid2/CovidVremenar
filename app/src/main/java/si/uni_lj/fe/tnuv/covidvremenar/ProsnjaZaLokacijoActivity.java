@@ -25,9 +25,9 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonDa:
+            case R.id.buttonDa:{
                 // do your code
-                public void foo(this) {
+
                 // when you need location
                 // if inside activity context = this;
 
@@ -40,9 +40,9 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
             }
                 break;
             case R.id.buttonNe:
-                //startActivity(new Intent(getApplicationContext()
-                //        , IzbiraObcineActivity.class));
-                //overridePendingTransition(0,0);
+                startActivity(new Intent(getApplicationContext()
+                        , IzbiraObcineActivity.class));
+                overridePendingTransition(0,0);
                 break;
             default:
                 break;
