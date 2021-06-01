@@ -19,7 +19,7 @@ public class PozdravniZaslonActivity extends AppCompatActivity implements View.O
 
     public void onClick(View v) {
         startActivity(new Intent(getApplicationContext()
-                , MojaObcinaActivity.class));
+                , ProsnjaZaLokacijoActivity.class));
         overridePendingTransition(0,0);
     }
 }
