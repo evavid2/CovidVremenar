@@ -8,7 +8,7 @@
     <string name="potrjeni_primeri">Potrjeni primeri:</string>
     <string name="tedenski_prirast">Tedenski prirast:</string>
     <integer name="stevilo_prebivalcev">16402</integer>
-    <string name="st_potrjenih_priimerov">55</string>
+    <integer name="st_potrjenih_primerov">55</integer>
     <string name="procent_tedenskega_prirasta">+10%</string>
     <string name="besedilo_prosnja_lokacije1">Za učinkovitejšo uporabo aplikacije je potreben dostop do lokacije.</string>
     <string name="prosnja_za_lokacijo_vprasanje">Ali dovoljuješ aplikaciji deljenje svoje lokacije?</string>

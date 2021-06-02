@@ -103,7 +103,7 @@
         android:paddingLeft="180dp"
         android:layout_centerVertical="true"
         android:paddingTop="200dp"
-        android:text="@string/st_potrjenih_priimerov"
+        android:text="@integer/st_potrjenih_primerov"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold" />
@@ -119,5 +119,13 @@
         android:text="@string/procent_tedenskega_prirasta"
         android:textSize="15dp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewObvestiloODatumu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="111dp"
+        android:text="TextView" />
 
 </RelativeLayout>

@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".IzbiraObcineActivity" android:exported="true"/>
+        <activity android:name=".IzbiraObcineActivity"/>
         <activity android:name=".PozdravniZaslonActivity" />
         <activity android:name=".ProsnjaZaLokacijoActivity" />
         <activity android:name=".UkrepiActivity" />
