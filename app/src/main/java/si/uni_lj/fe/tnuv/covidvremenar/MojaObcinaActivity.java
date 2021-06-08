@@ -27,15 +27,100 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MojaObcinaActivity extends AppCompatActivity {
-    //funkcija, ki glede na podan datum pridobi število potrjenih primerov za podano občino in jih izpiše v aktivnosti
+    public JSONObject vrniObjektPodatkovObcine(JSONArray response, String imeObcine) {
+        try {
+            JSONObject jsonobject = response.getJSONObject(0);
+            JSONObject jsonobjectRegij = jsonobject.getJSONObject("regions");
+            JSONArray keys = jsonobjectRegij.names();
+            //for loop gre čez vsako regijo in v value shrani objekt s ključi, ki so imena občin v posamezni regiji
+            for (int i = 0; i < Objects.requireNonNull(keys).length(); i++) {
+                String key = keys.getString(i);
+                JSONObject jsonobjectObcin = jsonobjectRegij.getJSONObject(key);
+                JSONArray imenaObcin = jsonobjectObcin.names();
+                for (int j = 0; j < Objects.requireNonNull(imenaObcin).length(); j++) {
+                    String trenutnaObcina = imenaObcin.getString(j);
+                    //predpocesiranje imen, da dobimo ustreznega s tistim iz podatkov apija
+                    if (imeObcine != null) {
+                        //najprej pregledam če vsebuje vezaj in če ga, pustim vezaj in zbrišem presledke okrog
+                        Pattern pattern = Pattern.compile("-");
+                        Matcher matcher = pattern.matcher(imeObcine);
+                        boolean isStringContainsSpecialCharacter = matcher.find();
+                        int iend;
+                        String imeObcineUpdate = imeObcine;
+                        if (isStringContainsSpecialCharacter) {
+                            iend = imeObcine.indexOf("-");
+                            String podImePrviDel;
+                            String vmesniDel;
+                            String podImeDrugiDel;
+                            podImePrviDel = imeObcine.substring(0, iend - 1);
+                            vmesniDel = imeObcine.substring(iend, iend + 2);
+                            podImeDrugiDel = imeObcine.substring(iend + 2);
+                            vmesniDel = vmesniDel.replaceAll(" ", "");
+                            imeObcineUpdate = podImePrviDel + vmesniDel + podImeDrugiDel;
+                            Log.i("rez:", imeObcineUpdate);
+                        }
+                        //pregledam ce vsebuje piko-slov., krajšano za slovenskih
+                        Pattern pika;
+                        pika = Pattern.compile(getString(R.string.znak_pika));
+                        Matcher ujemanje = pika.matcher(imeObcineUpdate);
+                        boolean aliVsebujePiko = ujemanje.find();
+                        if (aliVsebujePiko) {
+                            Log.i("prsl not", "cudn");
+                            Log.i("ime je pa:", imeObcineUpdate);
+                            iend = imeObcineUpdate.indexOf(".");
+                            if(iend != -1) {
+                                String podImePrviDel;
+                                String vmesniDel;
+                                String podImeDrugiDel;
+                                podImePrviDel = imeObcine.substring(0, iend - 4);
+                                vmesniDel = imeObcine.substring(iend - 4, iend);
+                                podImeDrugiDel = imeObcine.substring(iend + 1);
+                                Log.i("prvi del:", podImePrviDel);
+                                Log.i("drugi del:", podImeDrugiDel);
+                                Log.i("vmesni del:", vmesniDel);
+                                vmesniDel = "Slovenskih";
+                                imeObcineUpdate = podImePrviDel + vmesniDel + podImeDrugiDel;
+                                Log.i("rez:", imeObcineUpdate);
+                            }
+                        }
+                        //odstranimo oz zamenjamo vse presledke iz imena
+                        imeObcineUpdate = (imeObcineUpdate).replaceAll(" ", "_");
+                        //pretvorimo velike zacetnice v male
+                        imeObcineUpdate = imeObcineUpdate.toLowerCase();
+                        //pregledamo ce vsebuje / in če vsebuje, vzamemo samo prvo besedo do /
+                        pattern = Pattern.compile("/");
+                        matcher = pattern.matcher(imeObcineUpdate);
+                        isStringContainsSpecialCharacter = matcher.find();
+                        if (isStringContainsSpecialCharacter) {
+                            iend = imeObcineUpdate.indexOf("/");
+                            imeObcineUpdate = imeObcineUpdate.substring(0, iend); //this will give abc
+                        }
+                        /*Log.i("ime obcine prava", imeObcineUpdate);
+                        Log.i("ime obcine iz apija", trenutnaObcina);*/
+                        if (trenutnaObcina.equals(imeObcineUpdate)) {
+                            //pridobimo podatke za izbrano občino in jih izpišemo v aktivnosti
+                            JSONObject podatkiZaObcino = jsonobjectObcin.getJSONObject(imeObcineUpdate);
+                            return podatkiZaObcino;
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    //funkcija, ki glede na podan datum pridobi število aktivnih primerov za podano občino in jih izpiše v aktivnosti
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
-    public int pridobiPodatkeZaObcino(String datum, LocalDate date, Integer stevec, String imeObcine){
+    public int pridobiPodatkeZaObcino(String datum, LocalDate date, Integer stevec, String imeObcine) {
         stevec++;
         //funkcija se pokliče največ 7-krat, drugače ni podatkov, če je uspeh vrne 1, če ne 0
-        if(stevec <= 7) {
+        if (stevec <= 7) {
             //klic apija za pridobitev podatkov o potrjenih primerih za izbrano občino
             Integer finalStevec = stevec;
             AndroidNetworking.get("https://api.sledilnik.org/api/municipalities?from=" + datum + "&to=" + datum)
@@ -52,44 +137,89 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
                                 String novDatum = danPrej.format(formatter);
                                 pridobiPodatkeZaObcino(novDatum, danPrej, finalStevec, imeObcine);
-                            }
-                            else{
+                            } else {
                                 //dobimo json array za podan datum in izluščimo št potrjenih primerov za občino ter to zapišemo v pogled aktivnosti
-                                int stPrimerov = 7;
-                                //pridobim stPrebivalcev
+                                JSONObject podatkiZaObcino = vrniObjektPodatkovObcine(response, imeObcine);
+                                final int[] stAktivnih = {0};
+                                final int[] stPotrjenihDoZdaj = {0};
                                 try {
-                                    JSONObject jsonobject = response.getJSONObject(0);
-                                    JSONObject jsonobjectRegij = jsonobject.getJSONObject("regions");
-                                    JSONArray keys = jsonobjectRegij.names();
-                                    //for loop gre čez vsako regijo in v value shrani objekt s ključi, ki so imena občin v posamezni regiji
-                                    for (int i = 0; i < Objects.requireNonNull(keys).length(); i++) {
-                                        String key = keys.getString (i);
-                                        JSONObject jsonobjectObcin = jsonobjectRegij.getJSONObject(key);
-                                        JSONArray imenaObcin = jsonobjectObcin.names();
-                                        for(int j = 0; j< Objects.requireNonNull(imenaObcin).length(); j++){
-                                            String trenutnaObcina = imenaObcin.getString(j);
-                                            if(imeObcine != null) {
-                                                if (trenutnaObcina.equals(imeObcine.toLowerCase())) {
-                                                    JSONObject podatkiZaObcino = jsonobjectObcin.getJSONObject(imeObcine.toLowerCase());
-                                                    int stPotrjenih = podatkiZaObcino.getInt("activeCases");
-                                                    TextView prikazPotrjenihPrimerov = (TextView) findViewById(R.id.textView7);
-                                                    ;
-                                                    prikazPotrjenihPrimerov.setText(String.valueOf(stPotrjenih));
-                                                    break;
-                                                }
-                                            }
+                                    if(podatkiZaObcino != null) {
+                                        if(!podatkiZaObcino.isNull("activeCases")) {
+                                            stAktivnih[0] = podatkiZaObcino.getInt("activeCases");
+                                            TextView prikazPotrjenihPrimerov = findViewById(R.id.textView7);
+                                            prikazPotrjenihPrimerov.setText(String.valueOf(stAktivnih[0]));
+                                        }
+                                        if(!podatkiZaObcino.isNull("confirmedToDate")) {
+                                            stPotrjenihDoZdaj[0] = podatkiZaObcino.getInt("confirmedToDate");
                                         }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                //napišemo še napis v vednost na kateri datum so prikazani podatki
-                                TextView obvestiloODatumu = (TextView)findViewById(R.id.textViewObvestiloODatumu);;
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                                String koncniDatum = date.format(formatter);
-                                obvestiloODatumu.setText("Prikazani so najnovejši podatki za dan: "+koncniDatum);
+
+                                //pridobimo podatke o 7 dneh novih primerov za nazaj
+                                final int[] sestevek = {0};
+                                final int[] danasnjiNovi = {0};
+                                final int[] trenutniNovi = {0};
+                                final int[] trenutni = {0};
+                                final int[] prejsnjiNovi = {0};
+                                for (int dan = 0; dan < 8; dan++) {
+                                    //pridobimo datum za en dan prej
+                                    LocalDate danPrej = date.minusDays(1);
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                                    String novDatum = danPrej.format(formatter);
+                                    int finalDan = dan;
+                                    AndroidNetworking.get("https://api.sledilnik.org/api/municipalities?from=" + novDatum + "&to=" + novDatum)
+                                            .setTag("test")
+                                            .setPriority(Priority.LOW)
+                                            .build()
+                                            .getAsJSONArray(new JSONArrayRequestListener() {
+                                                @SuppressLint("SetTextI18n")
+                                                @Override
+                                                public void onResponse(JSONArray response) {
+                                                    //dobimo json array za podan datum in izluščimo št potrjenih primerov za občino
+                                                    JSONObject podatkiZaObcino = vrniObjektPodatkovObcine(response, imeObcine);
+                                                    try {
+                                                        if(podatkiZaObcino != null) {
+                                                            trenutni[0] = podatkiZaObcino.getInt("confirmedToDate");
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    if(finalDan == 0) {
+                                                        Log.i("na današnji dan", ""+stPotrjenihDoZdaj[0]);
+                                                        Log.i("na prejsnji dan", ""+trenutni[0]);
+                                                        danasnjiNovi[0] = stPotrjenihDoZdaj[0] - trenutni[0];
+                                                        TextView prikazNovihPrimerov = findViewById(R.id.textViewSteviloNovih);
+                                                        prikazNovihPrimerov.setText(String.valueOf(danasnjiNovi[0]));
+                                                    }
+                                                    else{
+                                                        trenutniNovi[0] = trenutni[0] - prejsnjiNovi[0];
+                                                        sestevek[0]+= trenutniNovi[0];
+                                                        Log.i("vmesni sestevek:", ""+sestevek[0]);
+                                                    }
+                                                    prejsnjiNovi[0] = trenutni[0];
+                                                }
+                                                @Override
+                                                public void onError(ANError error) {
+                                                    Log.e("napaka", "Ne morem dobiti seznama občin");
+
+                                                }
+                                            });
+                                    if(finalDan == 7){
+                                        int povprecnoStNovihPrimerov = sestevek[0]/7;
+                                        Log.i("sestevek je", ""+sestevek[0]);
+                                        Log.i("povprečno št novih je:", ""+povprecnoStNovihPrimerov);
+                                    }
+                                }
                             }
+                            //napišemo še napis v vednost na kateri datum so prikazani podatki
+                            TextView obvestiloODatumu = (TextView) findViewById(R.id.textViewObvestiloODatumu);
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                            String koncniDatum = date.format(formatter);
+                            obvestiloODatumu.setText("Prikazani so najnovejši podatki za dan: " + koncniDatum);
                         }
+
                         @Override
                         public void onError(ANError error) {
                             Log.e("napaka", "Ne morem dobiti seznama občin");
@@ -97,8 +227,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
                         }
                     });
             return 1;
-        }
-        else{
+        } else {
             return 0;
         }
     }

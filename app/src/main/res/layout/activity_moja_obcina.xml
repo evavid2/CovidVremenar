@@ -12,7 +12,7 @@
         android:text="Moja občina:"
         android:textSize="15sp"
         android:layout_marginTop="40dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/black"
         />
 
@@ -44,7 +44,7 @@
         android:layout_width="191dp"
         android:layout_height="353dp"
         android:layout_centerHorizontal="true"
-        android:paddingTop="130dp"/>
+        android:layout_marginTop="120dp"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -52,8 +52,8 @@
         android:layout_height="wrap_content"
         android:text="@string/prebivalci"
         android:layout_centerVertical="true"
-        android:paddingTop="100dp"
-        android:paddingLeft="80dp"
+        android:paddingTop="120dp"
+        android:paddingLeft="60dp"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:textSize="15dp"/>
@@ -62,10 +62,23 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/potrjeni_primeri"
+        android:text="@string/aktivni_primeri"
         android:layout_centerVertical="true"
-        android:paddingTop="200dp"
-        android:paddingLeft="80dp"
+        android:paddingTop="220dp"
+        android:paddingLeft="60dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="15dp"/>
+
+
+    <TextView
+        android:id="@+id/textViewNoviPrimeri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/novi_primeri"
+        android:layout_centerVertical="true"
+        android:paddingTop="320dp"
+        android:paddingLeft="60dp"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:textSize="15dp"/>
@@ -76,8 +89,8 @@
         android:layout_height="wrap_content"
         android:text="@string/tedenski_prirast"
         android:layout_centerVertical="true"
-        android:paddingTop="300dp"
-        android:paddingLeft="80dp"
+        android:paddingTop="420dp"
+        android:paddingLeft="60dp"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:textSize="15dp"/>
@@ -87,9 +100,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="180dp"
+        android:paddingLeft="210dp"
         android:layout_centerVertical="true"
-        android:paddingTop="100dp"
+        android:paddingTop="120dp"
         android:text="@integer/stevilo_prebivalcev"
         android:textColor="@color/black"
         android:textSize="15dp"
@@ -100,22 +113,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="180dp"
+        android:paddingLeft="210dp"
         android:layout_centerVertical="true"
-        android:paddingTop="200dp"
-        android:text="@integer/st_potrjenih_primerov"
+        android:paddingTop="220dp"
+        android:text="@string/st_potrjenih_primerov"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewSteviloNovih"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="210dp"
+        android:layout_centerVertical="true"
+        android:paddingTop="320dp"
+        android:text="@string/st_novih_primerov"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="180dp"
+        android:paddingLeft="210dp"
         android:layout_centerVertical="true"
-        android:paddingTop="300dp"
+        android:paddingTop="420dp"
         android:text="@string/procent_tedenskega_prirasta"
         android:textSize="15dp"
         android:textStyle="bold" />
@@ -125,7 +151,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="111dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginLeft="50dp"
+        android:textSize="14dp"
         android:text="TextView" />
 
 </RelativeLayout>
