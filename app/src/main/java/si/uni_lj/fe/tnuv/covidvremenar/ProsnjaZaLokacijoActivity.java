@@ -57,7 +57,7 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                             .show();
                     // Pridobi zadnjo znano lokacijo
                     fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
-                        Log.i("I made it", "to location listener");
+                        //Log.i("I made it", "to location listener");
                         Location location = task.getResult();
                         if (location != null) {
                             try {
@@ -67,9 +67,33 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                                         location.getLongitude(), 1);
 
                                 Log.i("Zaznana lokacija", String.valueOf(addresses.get(0)));
-                                Toast.makeText(ProsnjaZaLokacijoActivity.this, "Zaznana občina: "+String.valueOf(addresses.get(0).getAdminArea()), Toast.LENGTH_LONG)
-                                        .show();
-                                
+
+                                //Če objekt lokacije vsebuje AdminArea , odpri MojaObcinaActivity z imenom te občine
+                                if(addresses.get(0).getAdminArea() != null) {
+                                    Toast.makeText(ProsnjaZaLokacijoActivity.this,
+                                            "Zaznana občina: " + String.valueOf(addresses.get(0).getAdminArea()), Toast.LENGTH_LONG)
+                                            .show();
+                                    Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);
+                                    obcina.putExtra("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+
+                                    //Set isFirstRun to false in order to skip directly to MojaObcinaActivity next time
+                                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                            .putBoolean("isFirstRun", false).apply();
+
+                                    //Začni MojaObcinaActivity
+                                    startActivity(obcina);
+                                }
+
+                                //Če objekt lokacije ne vsebuje AdminArea (oz. je ta enak null), preusmeri na izbiro občine
+
+                                else {
+                                    Log.i("Lokacija","Občina ni bila zaznana");
+                                    Toast.makeText(ProsnjaZaLokacijoActivity.this, "Občina ni bila najdena.", Toast.LENGTH_SHORT)
+                                            .show();
+                                    startActivity(new Intent(getApplicationContext()
+                                            , IzbiraObcineActivity.class));
+                                    overridePendingTransition(0, 0);
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
