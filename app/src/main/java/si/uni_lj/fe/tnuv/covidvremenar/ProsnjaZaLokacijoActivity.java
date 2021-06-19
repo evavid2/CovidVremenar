@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,11 +49,13 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonDa: {
+                // Če je uporabnik sprejel dostop do lokacije
                 if (ActivityCompat.checkSelfPermission(ProsnjaZaLokacijoActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(ProsnjaZaLokacijoActivity.this, "Pridobivanje lokacije...", Toast.LENGTH_LONG)
+                    Toast.makeText(ProsnjaZaLokacijoActivity.this, "Pridobivanje lokacije...", Toast.LENGTH_SHORT)
                             .show();
+                    // Pridobi zadnjo znano lokacijo
                     fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
                         Log.i("I made it", "to location listener");
                         Location location = task.getResult();
@@ -60,8 +65,11 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                                         Locale.getDefault());
                                 List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),
                                         location.getLongitude(), 1);
-                                Log.i("latitude", String.valueOf(addresses.get(0).getLatitude()));
-                                Log.i("latitude", String.valueOf(addresses.get(0).getLongitude()));
+
+                                Log.i("Zaznana lokacija", String.valueOf(addresses.get(0)));
+                                Toast.makeText(ProsnjaZaLokacijoActivity.this, "Zaznana občina: "+String.valueOf(addresses.get(0).getAdminArea()), Toast.LENGTH_LONG)
+                                        .show();
+                                
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -74,9 +82,12 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                             overridePendingTransition(0, 0);
                         }
                     });
-                } else {
+                }
+                else {
                     ActivityCompat.requestPermissions(ProsnjaZaLokacijoActivity.this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    Toast.makeText(ProsnjaZaLokacijoActivity.this, "Prosim, ponovno pritisnite DA.", Toast.LENGTH_LONG)
+                            .show();
                 }
             }
             break;

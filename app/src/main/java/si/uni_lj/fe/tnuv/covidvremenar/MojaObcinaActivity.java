@@ -248,8 +248,10 @@ public class MojaObcinaActivity extends AppCompatActivity {
                     //.show();
         }
 
-        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                .putBoolean("isFirstRun", false).apply();
+        // Uncomment if you want to only show PozdravniZaslon once
+
+        //getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+        //        .putBoolean("isFirstRun", false).apply();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moja_obcina);

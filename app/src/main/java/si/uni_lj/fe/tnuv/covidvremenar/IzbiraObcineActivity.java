@@ -81,6 +81,10 @@ public class IzbiraObcineActivity extends AppCompatActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
+                                        //Set isFirstRun to false in order to skip directly to MojaObcinaActivity next time
+                                        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                                .putBoolean("isFirstRun", false).apply();
+
                                         startActivity(intent);
                                     }
                                 }
