@@ -1,48 +1,89 @@
 package si.uni_lj.fe.tnuv.covidvremenar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View.OnClickListener {
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_prosnja_za_lokacijo);
         Button buttonDa = findViewById(R.id.buttonDa);
         buttonDa.setOnClickListener(this);
 
         Button buttonNe = findViewById(R.id.buttonNe);
         buttonNe.setOnClickListener(this);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonDa:{
-                // do your code
+            case R.id.buttonDa: {
+                if (ActivityCompat.checkSelfPermission(ProsnjaZaLokacijoActivity.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                // when you need location
-                // if inside activity context = this;
-
-                SingleShotLocationProvider.requestSingleUpdate(this,
-                        new SingleShotLocationProvider.LocationCallback() {
-                            @Override public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
-                                Log.d("Location", "my location is " + location.toString());
+                    Toast.makeText(ProsnjaZaLokacijoActivity.this, "Pridobivanje lokacije...", Toast.LENGTH_LONG)
+                            .show();
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+                        Log.i("I made it", "to location listener");
+                        Location location = task.getResult();
+                        if (location != null) {
+                            try {
+                                Geocoder geocoder = new Geocoder(ProsnjaZaLokacijoActivity.this,
+                                        Locale.getDefault());
+                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),
+                                        location.getLongitude(), 1);
+                                Log.i("latitude", String.valueOf(addresses.get(0).getLatitude()));
+                                Log.i("latitude", String.valueOf(addresses.get(0).getLongitude()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        });
+                        }
+                        else {
+                            Toast.makeText(ProsnjaZaLokacijoActivity.this, "Lokacija ni bila najdena.", Toast.LENGTH_LONG)
+                                    .show();
+                            startActivity(new Intent(getApplicationContext()
+                                    , IzbiraObcineActivity.class));
+                            overridePendingTransition(0, 0);
+                        }
+                    });
+                } else {
+                    ActivityCompat.requestPermissions(ProsnjaZaLokacijoActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                }
             }
-                break;
+            break;
             case R.id.buttonNe:
                 startActivity(new Intent(getApplicationContext()
                         , IzbiraObcineActivity.class));
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
                 break;
             default:
                 break;
