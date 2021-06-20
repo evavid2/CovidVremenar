@@ -6,13 +6,13 @@
     <string name="ime_občine">Ime občine</string>
     <string name="prebivalci">Prebivalcev:</string>
     <string name="aktivni_primeri">Aktivni primeri:</string>
-    <string name="tedenski_prirast">V preteklem tednu:</string>
-    <integer name="stevilo_prebivalcev">16402</integer>
-    <string name="st_potrjenih_primerov">Ni podatka</string>
-    <string name="procent_tedenskega_prirasta">+10%</string>
+    <string name="tedenski_prirast">Število aktivnih primerov:</string>
+    <integer name="stevilo_prebivalcev">0</integer>
+    <string name="st_potrjenih_primerov"> </string>
+    <string name="procent_tedenskega_prirasta">…</string>
     <string name="besedilo_prosnja_lokacije1">Za učinkovitejšo uporabo aplikacije je potreben dostop do lokacije.</string>
     <string name="prosnja_za_lokacijo_vprasanje">Ali dovoljuješ aplikaciji deljenje svoje lokacije?</string>
     <string name="novi_primeri">Novi primeri:</string>
-    <string name="st_novih_primerov">Ni podatka.</string>
+    <string name="st_novih_primerov"> </string>
     <string name="znak_pika">.</string>
 </resources>

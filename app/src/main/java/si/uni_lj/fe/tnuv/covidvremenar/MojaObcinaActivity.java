@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -152,68 +153,66 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                //pridobimo podatke o 7 dneh novih primerov za nazaj
-                                final int[] sestevek = {0};
+
                                 final int[] danasnjiNovi = {0};
-                                final int[] trenutniNovi = {0};
                                 final int[] trenutni = {0};
-                                final int[] prejsnjiNovi = {0};
+                                final int[] aktivniPrejsnji = {0};
                                 LocalDate danasnjiDan = date;
                                 LocalDate danPrej = danasnjiDan;
-                                for (int dan = 0; dan < 8; dan++) {
-                                    //pridobimo datum za en dan prej
-                                    danPrej = danasnjiDan.minusDays(1);
-                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-                                    String novDatum = danPrej.format(formatter);
-                                    int finalDan = dan;
-                                    AndroidNetworking.get("https://api.sledilnik.org/api/municipalities?from=" + novDatum + "&to=" + novDatum)
-                                            .setTag("test")
-                                            .setPriority(Priority.LOW)
-                                            .build()
-                                            .getAsJSONArray(new JSONArrayRequestListener() {
-                                                @SuppressLint("SetTextI18n")
-                                                @Override
-                                                public void onResponse(JSONArray response) {
-                                                    //dobimo json array za podan datum in izluščimo št potrjenih primerov za občino
-                                                    JSONObject podatkiZaObcino = vrniObjektPodatkovObcine(response, imeObcine);
-                                                    try {
-                                                        if(podatkiZaObcino != null) {
-                                                            trenutni[0] = podatkiZaObcino.getInt("confirmedToDate");
-                                                            Log.i("indeks", ""+finalDan);
-                                                            Log.i("datum:", novDatum);
-                                                            //Log.i("trenutni potrjeni:", ""+trenutni[0]);
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    if(finalDan == 0) {
-                                                        danasnjiNovi[0] = stPotrjenihDoZdaj[0] - trenutni[0];
-                                                        sestevek[0] += danasnjiNovi[0];
-                                                        prejsnjiNovi[0] = trenutni[0];
-                                                        Log.i("dan 0 prejsnji", ""+trenutni[0]);
-                                                        TextView prikazNovihPrimerov = findViewById(R.id.textViewSteviloNovih);
-                                                        prikazNovihPrimerov.setText(String.valueOf(danasnjiNovi[0]));
+                                //pridobimo datum za en dan prej
+                                danPrej = danasnjiDan.minusDays(1);
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                                String novDatum = danPrej.format(formatter);
+                                AndroidNetworking.get("https://api.sledilnik.org/api/municipalities?from=" + novDatum + "&to=" + novDatum)
+                                        .build()
+                                        .getAsJSONArray(new JSONArrayRequestListener() {
+                                            @SuppressLint("SetTextI18n")
+                                            @Override
+                                            public void onResponse(JSONArray response) {
+                                                //dobimo json array za podan datum in izluščimo št potrjenih primerov za občino
+                                                JSONObject podatkiZaObcino = vrniObjektPodatkovObcine(response, imeObcine);
+                                                try {
+                                                    if(podatkiZaObcino != null) {
+                                                        trenutni[0] = podatkiZaObcino.getInt("confirmedToDate");
+                                                        aktivniPrejsnji[0] = podatkiZaObcino.getInt("activeCases");
                                                     }
                                                     else{
-                                                        Log.i("trenutni potrjeni:", ""+trenutni[0]);
-                                                        Log.i("prejsnji potrjeni:", ""+prejsnjiNovi[0]);
-                                                        trenutniNovi[0] = trenutni[0] - prejsnjiNovi[0];
-                                                        sestevek[0] += trenutniNovi[0];
-                                                        prejsnjiNovi[0] = trenutni[0];
-                                                        Log.i("trenutni novi:", ""+trenutniNovi[0]);
-                                                        Log.i("sestevek:", ""+sestevek[0]);
-                                                        if(finalDan == 7){
-                                                        }
+                                                        Log.i("aha", "tole ne gre");
                                                     }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
-                                                @Override
-                                                public void onError(ANError error) {
-                                                    Log.e("napaka", "Ne morem dobiti seznama občin");
+                                                //nastavimo st novih primerov v pogled
+                                                danasnjiNovi[0] = stPotrjenihDoZdaj[0] - trenutni[0];
+                                                TextView prikazNovihPrimerov = findViewById(R.id.textViewSteviloNovih);
+                                                prikazNovihPrimerov.setText(String.valueOf(danasnjiNovi[0]));
+                                                //pogledamo če št aktivnih narašča glede na prejsnji dan
+                                                //nastavljanje barve teksta za tedenski prirast, če gre gor je rdeče, če gre dol je zeleno, ter slike, če gre gor je dež, če gre dol je sonce
+                                                TextView tedenskiPrirast =(TextView)findViewById(R.id.textView8);
+                                                ImageView slikaVremena = (ImageView)findViewById(R.id.imageView10);
+                                                Log.i("stAktivnih danes", ""+stAktivnih[0]);
+                                                Log.i("aktivni prej:", ""+aktivniPrejsnji[0]);
+                                                if(stAktivnih[0] <= aktivniPrejsnji[0]){
+                                                    tedenskiPrirast.setText("Pada");
+                                                    tedenskiPrirast.setTextColor(Color.GREEN);
+                                                    slikaVremena.setImageResource(R.mipmap.soncek);
+                                                }
+                                                else if(stAktivnih[0] > aktivniPrejsnji[0]){
+                                                    tedenskiPrirast.setText("Narašča");
+                                                    tedenskiPrirast.setTextColor(Color.RED);
+                                                    slikaVremena.setImageResource(R.mipmap.dezevno_vreme);
+                                                }
+                                                else{
+                                                    tedenskiPrirast.setTextColor(Color.BLACK);
+                                                    slikaVremena.setImageResource(R.mipmap.soncek);
+                                                }
+                                            }
+                                            @Override
+                                            public void onError(ANError error) {
+                                                Log.e("napaka", "Ne morem dobiti seznama občin");
 
-                                                }
-                                            });
-                                    danasnjiDan = danPrej;
-                                }
+                                            }
+                                        });
                             }
                             //napišemo še napis v vednost na kateri datum so prikazani podatki
                             TextView obvestiloODatumu = (TextView) findViewById(R.id.textViewObvestiloODatumu);
@@ -282,7 +281,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
         pridobiPodatkeZaObcino(datum, date, stevecPonovitev, imeObcine);
 
 
-        //nastavljanje barve teksta za tedenski prirast, če gre gor je rdeče, če gre dol je zeleno, ter slike, če gre gor je dež, če gre dol je sonce
+        /*//nastavljanje barve teksta za tedenski prirast, če gre gor je rdeče, če gre dol je zeleno, ter slike, če gre gor je dež, če gre dol je sonce
         TextView tedenskiPrirast =(TextView)findViewById(R.id.textView8);
         ImageView slikaVremena = (ImageView)findViewById(R.id.imageView10);
         String prirast = getString(R.string.procent_tedenskega_prirasta);
@@ -298,7 +297,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
         else{
             tedenskiPrirast.setTextColor(Color.BLACK);
             slikaVremena.setImageResource(R.mipmap.soncek);
-        }
+        }*/
 
         //spodnja navigacija
         //Initialize And Assign Variable

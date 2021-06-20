@@ -6,19 +6,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/besedilo_prosnja_lokacije1"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="250dp"
-        android:gravity="center"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:textColor="@color/black"
-        android:textSize="11dp"
-        />
 
     <TextView
         android:id="@+id/textView3"
@@ -32,7 +19,7 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="21dp"
         />
 
 
@@ -40,8 +27,8 @@
         android:id="@+id/buttonDa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginTop="380dp"
+        android:layout_marginLeft="80dp"
         android:background="@drawable/rounded_corners"
         android:text="DA"
         android:paddingRight="5dp"
@@ -52,8 +39,8 @@
         android:id="@+id/buttonNe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
-        android:layout_marginLeft="220dp"
+        android:layout_marginTop="380dp"
+        android:layout_marginLeft="240dp"
         android:background="@drawable/rounded_corners"
         android:text="NE"
         android:paddingRight="5dp"

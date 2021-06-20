@@ -41,6 +41,38 @@ import java.util.Locale;
 public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View.OnClickListener {
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    public int pridobiStPrebivalcev(List<Address> addresses){
+        final int[] stPrebivalcev = {0};
+        //pridobimo se podatek o številu prebivalcev obcine in pošljemo v shared preferences
+        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for(int i=0;i<response.length();i++) {
+                            try {
+                                JSONObject obcina = response.getJSONObject(i);
+                                if(obcina.optString("name").equals(String.valueOf(addresses.get(0).getAdminArea()))){
+                                    Log.i("stPrebivalcev", ""+obcina.getInt("population"));
+                                    stPrebivalcev[0] = obcina.getInt("population");
+                                    break;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        Log.e("napaka","Ne morem dobiti seznama občin");
+                    }
+                });
+        return stPrebivalcev[0];
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,36 +118,10 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                                     SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = pref.edit();
                                     editor.putString("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+                                    int prebivalci = pridobiStPrebivalcev(addresses);
+                                    editor.putInt("ST_PREBIVALCEV",prebivalci);
                                     editor.apply();
 
-                                    //pridobimo se podatek o številu prebivalcev obcine in pošljemo v shared preferences
-                                    AndroidNetworking.initialize(getApplicationContext());
-                                    AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
-                                            .setTag("test")
-                                            .setPriority(Priority.LOW)
-                                            .build()
-                                            .getAsJSONArray(new JSONArrayRequestListener() {
-                                                @Override
-                                                public void onResponse(JSONArray response) {
-                                                    for(int i=0;i<response.length();i++) {
-                                                        try {
-                                                            JSONObject obcina = response.getJSONObject(i);
-                                                            if(obcina.optString("name").equals(String.valueOf(addresses.get(0).getAdminArea()))){
-                                                                int stPrebivalcev = obcina.getInt("population");
-                                                                editor.putInt("ST_PREBIVALCEV", stPrebivalcev);
-                                                                editor.apply();
-                                                                break;
-                                                            }
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                }
-                                                @Override
-                                                public void onError(ANError error) {
-                                                    Log.e("napaka","Ne morem dobiti seznama občin");
-                                                }
-                                    });
                                     Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);
                                     //Set isFirstRun to false in order to skip directly to MojaObcinaActivity next time
                                     getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
