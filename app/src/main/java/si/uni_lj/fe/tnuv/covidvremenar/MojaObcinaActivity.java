@@ -238,6 +238,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidNetworking.initialize(getApplicationContext());
+        //Preveri ali je bila občina že izbrana
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
 
@@ -268,7 +269,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
         //dinamično nastavljanja podatka o številu prebivalcev
         //int stPrebivalcev = getIntent().getIntExtra("ST_PREBIVALCEV", 0);
         int stPrebivalcev = prefs.getInt("ST_PREBIVALCEV", 0);
-        TextView prikazStevilaPrebivalcev = (TextView)findViewById(R.id.textView6);;
+        TextView prikazStevilaPrebivalcev = (TextView)findViewById(R.id.textView6);
         prikazStevilaPrebivalcev.setText(String.valueOf(stPrebivalcev));
 
         //klic apija za pridobitev podatkov o potrjenih primerih za izbrano občino

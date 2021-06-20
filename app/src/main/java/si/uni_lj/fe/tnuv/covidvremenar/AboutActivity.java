@@ -6,16 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        Button gumbNovaObcina = findViewById(R.id.gumbSpremeniObcino);
+        gumbNovaObcina.setOnClickListener(this);
+
 
         //Initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -49,6 +55,12 @@ public class AboutActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void onClick(View v) {
+        startActivity(new Intent(getApplicationContext()
+                , ProsnjaZaLokacijoActivity.class));
+        overridePendingTransition(0,0);
     }
 
 

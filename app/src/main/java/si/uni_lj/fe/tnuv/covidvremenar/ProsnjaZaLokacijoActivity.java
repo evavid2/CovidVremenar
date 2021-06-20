@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -85,6 +86,15 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
         buttonNe.setOnClickListener(this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        //Preveri, če je bila občina že izbrana
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+        //Če je občina bila že izbrana, spremeni tekst v aktivnosti
+        if(!isFirstRun) {
+            TextView uporabaLokacije = (TextView)findViewById(R.id.textView3);
+            uporabaLokacije.setText("Ali želite za spremembo občine uporabiti zaznavo lokacije?");
+        }
     }
 
     public void onClick(View v) {
