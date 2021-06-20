@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -23,6 +28,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,9 +82,41 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                                     Toast.makeText(ProsnjaZaLokacijoActivity.this,
                                             "Zaznana občina: " + String.valueOf(addresses.get(0).getAdminArea()), Toast.LENGTH_LONG)
                                             .show();
-                                    Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);
-                                    obcina.putExtra("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+                                    //obcina.putExtra("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+                                    editor.apply();
 
+                                    //pridobimo se podatek o številu prebivalcev obcine in pošljemo v shared preferences
+                                    AndroidNetworking.initialize(getApplicationContext());
+                                    AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
+                                            .setTag("test")
+                                            .setPriority(Priority.LOW)
+                                            .build()
+                                            .getAsJSONArray(new JSONArrayRequestListener() {
+                                                @Override
+                                                public void onResponse(JSONArray response) {
+                                                    for(int i=0;i<response.length();i++) {
+                                                        try {
+                                                            JSONObject obcina = response.getJSONObject(i);
+                                                            if(obcina.optString("name").equals(String.valueOf(addresses.get(0).getAdminArea()))){
+                                                                int stPrebivalcev = obcina.getInt("population");
+                                                                editor.putInt("ST_PREBIVALCEV", stPrebivalcev);
+                                                                editor.apply();
+                                                                break;
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }
+                                                @Override
+                                                public void onError(ANError error) {
+                                                    Log.e("napaka","Ne morem dobiti seznama občin");
+                                                }
+                                    });
+                                    Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);
                                     //Set isFirstRun to false in order to skip directly to MojaObcinaActivity next time
                                     getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                                             .putBoolean("isFirstRun", false).apply();
