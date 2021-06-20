@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,8 +70,6 @@ public class MojaObcinaActivity extends AppCompatActivity {
                         Matcher ujemanje = pika.matcher(imeObcineUpdate);
                         boolean aliVsebujePiko = ujemanje.find();
                         if (aliVsebujePiko) {
-                            Log.i("prsl not", "cudn");
-                            Log.i("ime je pa:", imeObcineUpdate);
                             iend = imeObcineUpdate.indexOf(".");
                             if(iend != -1) {
                                 String podImePrviDel;
@@ -79,12 +78,8 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                 podImePrviDel = imeObcine.substring(0, iend - 4);
                                 vmesniDel = imeObcine.substring(iend - 4, iend);
                                 podImeDrugiDel = imeObcine.substring(iend + 1);
-                                Log.i("prvi del:", podImePrviDel);
-                                Log.i("drugi del:", podImeDrugiDel);
-                                Log.i("vmesni del:", vmesniDel);
                                 vmesniDel = "Slovenskih";
                                 imeObcineUpdate = podImePrviDel + vmesniDel + podImeDrugiDel;
-                                Log.i("rez:", imeObcineUpdate);
                             }
                         }
                         //odstranimo oz zamenjamo vse presledke iz imena
@@ -163,9 +158,11 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                 final int[] trenutniNovi = {0};
                                 final int[] trenutni = {0};
                                 final int[] prejsnjiNovi = {0};
+                                LocalDate danasnjiDan = date;
+                                LocalDate danPrej = danasnjiDan;
                                 for (int dan = 0; dan < 8; dan++) {
                                     //pridobimo datum za en dan prej
-                                    LocalDate danPrej = date.minusDays(1);
+                                    danPrej = danasnjiDan.minusDays(1);
                                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
                                     String novDatum = danPrej.format(formatter);
                                     int finalDan = dan;
@@ -182,23 +179,32 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                                     try {
                                                         if(podatkiZaObcino != null) {
                                                             trenutni[0] = podatkiZaObcino.getInt("confirmedToDate");
+                                                            Log.i("indeks", ""+finalDan);
+                                                            Log.i("datum:", novDatum);
+                                                            //Log.i("trenutni potrjeni:", ""+trenutni[0]);
                                                         }
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();
                                                     }
                                                     if(finalDan == 0) {
-                                                        Log.i("na današnji dan", ""+stPotrjenihDoZdaj[0]);
-                                                        Log.i("na prejsnji dan", ""+trenutni[0]);
                                                         danasnjiNovi[0] = stPotrjenihDoZdaj[0] - trenutni[0];
+                                                        sestevek[0] += danasnjiNovi[0];
+                                                        prejsnjiNovi[0] = trenutni[0];
+                                                        Log.i("dan 0 prejsnji", ""+trenutni[0]);
                                                         TextView prikazNovihPrimerov = findViewById(R.id.textViewSteviloNovih);
                                                         prikazNovihPrimerov.setText(String.valueOf(danasnjiNovi[0]));
                                                     }
                                                     else{
+                                                        Log.i("trenutni potrjeni:", ""+trenutni[0]);
+                                                        Log.i("prejsnji potrjeni:", ""+prejsnjiNovi[0]);
                                                         trenutniNovi[0] = trenutni[0] - prejsnjiNovi[0];
-                                                        sestevek[0]+= trenutniNovi[0];
-                                                        Log.i("vmesni sestevek:", ""+sestevek[0]);
+                                                        sestevek[0] += trenutniNovi[0];
+                                                        prejsnjiNovi[0] = trenutni[0];
+                                                        Log.i("trenutni novi:", ""+trenutniNovi[0]);
+                                                        Log.i("sestevek:", ""+sestevek[0]);
+                                                        if(finalDan == 7){
+                                                        }
                                                     }
-                                                    prejsnjiNovi[0] = trenutni[0];
                                                 }
                                                 @Override
                                                 public void onError(ANError error) {
@@ -206,11 +212,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
 
                                                 }
                                             });
-                                    if(finalDan == 7){
-                                        int povprecnoStNovihPrimerov = sestevek[0]/7;
-                                        Log.i("sestevek je", ""+sestevek[0]);
-                                        Log.i("povprečno št novih je:", ""+povprecnoStNovihPrimerov);
-                                    }
+                                    danasnjiDan = danPrej;
                                 }
                             }
                             //napišemo še napis v vednost na kateri datum so prikazani podatki
@@ -258,12 +260,15 @@ public class MojaObcinaActivity extends AppCompatActivity {
 
 
         //dinamično nastavljanje imena občine glede na to katera je izbrana
-        String imeObcine = getIntent().getStringExtra("IZBRANA_OBCINA");
+        //String imeObcine = getIntent().getStringExtra("IZBRANA_OBCINA");
+        SharedPreferences prefs = getSharedPreferences("MyPref", MODE_PRIVATE);
+        String imeObcine = prefs.getString("IZBRANA_OBCINA", "No name defined");
         TextView naslovObcine = (TextView)findViewById(R.id.textView);
         naslovObcine.setText(imeObcine);
 
         //dinamično nastavljanja podatka o številu prebivalcev
-        int stPrebivalcev = getIntent().getIntExtra("ST_PREBIVALCEV", 0);
+        //int stPrebivalcev = getIntent().getIntExtra("ST_PREBIVALCEV", 0);
+        int stPrebivalcev = prefs.getInt("ST_PREBIVALCEV", 0);
         TextView prikazStevilaPrebivalcev = (TextView)findViewById(R.id.textView6);;
         prikazStevilaPrebivalcev.setText(String.valueOf(stPrebivalcev));
 

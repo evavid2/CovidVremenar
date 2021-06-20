@@ -3,6 +3,7 @@ package si.uni_lj.fe.tnuv.covidvremenar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -71,13 +72,19 @@ public class IzbiraObcineActivity extends AppCompatActivity {
                                     String selected_val=spinner.getSelectedItem().toString();
                                     int selected_index = spinner.getSelectedItemPosition();
                                     if(!selected_val.equals("Izberi domačo občino:")){
+                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = pref.edit();
+                                        editor.putString("IZBRANA_OBCINA", selected_val);  // Saving string
+                                        editor.apply(); // commit changes
                                         Intent intent = new Intent(getApplicationContext(), MojaObcinaActivity.class);
-                                        intent.putExtra("IZBRANA_OBCINA", selected_val);
+                                        //intent.putExtra("IZBRANA_OBCINA", selected_val);
                                         //pridobim podatek o številu prebivalcev za izbrano občino
                                         try {
                                             JSONObject jsonobject = response.getJSONObject(selected_index);
                                             int stPrebivalcev = jsonobject.getInt("population");
-                                            intent.putExtra("ST_PREBIVALCEV", stPrebivalcev);
+                                            editor.putInt("ST_PREBIVALCEV", stPrebivalcev);
+                                            editor.apply();
+                                            //intent.putExtra("ST_PREBIVALCEV", stPrebivalcev);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
