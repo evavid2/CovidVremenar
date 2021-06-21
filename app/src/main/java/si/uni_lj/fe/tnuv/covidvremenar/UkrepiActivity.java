@@ -20,14 +20,14 @@ public class UkrepiActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.ukrepi);
+        bottomNavigationView.setSelectedItemId(R.id.cepljenje);
 
         //Perform ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.ukrepi:
+                    case R.id.cepljenje:
                         return true;
                     case R.id.slovenija:
                         startActivity(new Intent(getApplicationContext()

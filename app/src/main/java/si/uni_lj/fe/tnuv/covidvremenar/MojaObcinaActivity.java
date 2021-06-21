@@ -322,7 +322,7 @@ public class MojaObcinaActivity extends AppCompatActivity {
                                 , AboutActivity.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.ukrepi:
+                    case R.id.cepljenje:
                         startActivity(new Intent(getApplicationContext()
                                 , UkrepiActivity.class));
                         overridePendingTransition(0,0);

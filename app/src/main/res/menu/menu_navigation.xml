@@ -13,9 +13,9 @@
 
 
     <item
-        android:id="@+id/ukrepi"
-        android:icon="@drawable/ic_ukrepi"
-        android:title="Ukrepi" />
+        android:id="@+id/cepljenje"
+        android:icon="@drawable/ic_pikpng_com_needle_clipart_png_3870425"
+        android:title="Cepljenje" />
 
     <item
         android:id="@+id/about"
