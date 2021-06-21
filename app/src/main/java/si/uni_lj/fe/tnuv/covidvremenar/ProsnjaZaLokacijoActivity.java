@@ -125,20 +125,51 @@ public class ProsnjaZaLokacijoActivity extends AppCompatActivity implements View
                                             "Zaznana občina: " + String.valueOf(addresses.get(0).getAdminArea()), Toast.LENGTH_LONG)
                                             .show();
                                     //obcina.putExtra("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
-                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                    /*SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = pref.edit();
                                     editor.putString("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
-                                    int prebivalci = pridobiStPrebivalcev(addresses);
-                                    editor.putInt("ST_PREBIVALCEV",prebivalci);
                                     editor.apply();
-
-                                    Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);
+                                    Intent obcina = new Intent(getApplicationContext(), MojaObcinaActivity.class);*/
+                                    //pridobimo se podatek o številu prebivalcev obcine in pošljemo v shared preferences
+                                    AndroidNetworking.initialize(getApplicationContext());
+                                    AndroidNetworking.get("https://api.sledilnik.org/api/municipalities-list")
+                                            .setTag("test")
+                                            .setPriority(Priority.LOW)
+                                            .build()
+                                            .getAsJSONArray(new JSONArrayRequestListener() {
+                                                @Override
+                                                public void onResponse(JSONArray response) {
+                                                    for(int i=0;i<response.length();i++) {
+                                                        try {
+                                                            JSONObject obcina = response.getJSONObject(i);
+                                                            if(obcina.optString("name").equals(String.valueOf(addresses.get(0).getAdminArea()))){
+                                                                Log.i("stPrebivalcev", ""+obcina.getInt("population"));
+                                                                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                                                SharedPreferences.Editor editor = pref.edit();
+                                                                editor.putString("IZBRANA_OBCINA", String.valueOf(addresses.get(0).getAdminArea()));
+                                                                editor.apply();
+                                                                Intent intent = new Intent(getApplicationContext(), MojaObcinaActivity.class);
+                                                                int prebivalci = obcina.getInt("population");
+                                                                editor.putInt("ST_PREBIVALCEV",prebivalci);
+                                                                editor.apply();
+                                                                //Začni MojaObcinaActivity
+                                                                startActivity(intent);
+                                                                break;
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }
+                                                @Override
+                                                public void onError(ANError error) {
+                                                    Log.e("napaka","Ne morem dobiti seznama občin");
+                                                }
+                                            });
                                     //Set isFirstRun to false in order to skip directly to MojaObcinaActivity next time
                                     getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                                             .putBoolean("isFirstRun", false).apply();
 
-                                    //Začni MojaObcinaActivity
-                                    startActivity(obcina);
                                 }
 
                                 //Če objekt lokacije ne vsebuje AdminArea (oz. je ta enak null), preusmeri na izbiro občine
