@@ -41,5 +41,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 }
