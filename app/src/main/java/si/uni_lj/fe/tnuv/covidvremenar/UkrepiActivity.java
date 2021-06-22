@@ -43,6 +43,7 @@ public class UkrepiActivity extends AppCompatActivity {
     private int[] janssen_moderna_pfizer_az = new int [4];
 
     String vcerajsnjiDatum = new String("2020-12-31");
+    String predvcerajsni = new String("2020-12-31");
     //deleži proizvajalcev ter imena za graf
     private float[] deleziProizvajalcev = new float[4];
     private String[] proizvajalci = {"Janssen","Moderna","Pfizer","AstraZeneca"};
@@ -137,7 +138,7 @@ public class UkrepiActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        else pridobiPodatkeCepljenja(vcerajsnjiDatum);
+                        else pridobiPodatkeCepljenja(predvcerajsni);
 
                     }
                     @Override
@@ -159,12 +160,14 @@ public class UkrepiActivity extends AppCompatActivity {
 
         LocalDate date = LocalDate.now();
         LocalDate yesterday = LocalDate.now().minusDays( 1 );
+        LocalDate dayBefore = yesterday.minusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         String datum = date.format(formatter);
         vcerajsnjiDatum = yesterday.format(formatter);
+        predvcerajsni = dayBefore.format(formatter);
         //Log.i("DatumCepljenje",datum);
 
-        pridobiPodatkeCepljenja(datum);
+        pridobiPodatkeCepljenja(vcerajsnjiDatum);
 
 
 
