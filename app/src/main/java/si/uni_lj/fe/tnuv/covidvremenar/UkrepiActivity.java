@@ -51,9 +51,14 @@ public class UkrepiActivity extends AppCompatActivity {
     //deklaracija grafa
     PieChart grafDelezProizvajalcevCepiv;
 
+    //objekti datumov
+    LocalDate date;
+    LocalDate yesterday;
+    LocalDate dayBefore;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
-    public int pridobiPodatkeCepljenja(String datum) {
+    public int pridobiPodatkeCepljenja(String datum, LocalDate dateObject) {
         AndroidNetworking.get("https://api.sledilnik.org/api/vaccinations?from="+datum+"&to="+datum)
                 .setTag("cepljenje")
                 .setPriority(Priority.HIGH)
@@ -96,6 +101,11 @@ public class UkrepiActivity extends AppCompatActivity {
                                         deleziProizvajalcev[i] = (float)janssen_moderna_pfizer_az[i] / (float)odmerkiDoSedaj;
                                         //Log.i(proizvajalci[i], String.valueOf(deleziProizvajalcev[i]));
                                     }
+                                    //Prikaži datum podatkov
+                                    TextView tvDatum = (TextView) findViewById(R.id.tvDatumCepljenje);
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                                    String koncniDatum = dateObject.format(formatter);
+                                    tvDatum.setText(koncniDatum);
 
                                     TextView prvaDozaDanes = (TextView)findViewById(R.id.tvPrvaDozaDanes);
                                     prvaDozaDanes.setText(String.valueOf(steviloCepljenih[0]));
@@ -138,7 +148,7 @@ public class UkrepiActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        else pridobiPodatkeCepljenja(predvcerajsni);
+                        else pridobiPodatkeCepljenja(predvcerajsni, dayBefore);
 
                     }
                     @Override
@@ -158,16 +168,16 @@ public class UkrepiActivity extends AppCompatActivity {
 
         AndroidNetworking.initialize(getApplicationContext());
 
-        LocalDate date = LocalDate.now();
-        LocalDate yesterday = LocalDate.now().minusDays( 1 );
-        LocalDate dayBefore = yesterday.minusDays(1);
+        date = LocalDate.now();
+        yesterday = LocalDate.now().minusDays( 1 );
+        dayBefore = yesterday.minusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         String datum = date.format(formatter);
         vcerajsnjiDatum = yesterday.format(formatter);
         predvcerajsni = dayBefore.format(formatter);
         //Log.i("DatumCepljenje",datum);
-
-        pridobiPodatkeCepljenja(vcerajsnjiDatum);
+        //pridobi podatke kličemo s Stringom in LocalDate objektom
+        pridobiPodatkeCepljenja(vcerajsnjiDatum,yesterday);
 
 
 
