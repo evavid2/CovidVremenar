@@ -11,7 +11,8 @@
     <string name="st_potrjenih_primerov"> </string>
     <string name="procent_tedenskega_prirasta">…</string>
     <string name="besedilo_prosnja_lokacije1">Za učinkovitejšo uporabo aplikacije je potreben dostop do lokacije.</string>
-    <string name="prosnja_za_lokacijo_vprasanje">Ali dovoljuješ aplikaciji deljenje svoje lokacije?</string>
+    <string name="prosnja_za_lokacijo_vprasanje">Ali dovoljuješ aplikaciji dostop do lokacije?</string>
+    <string name="prosnja_za_lokacijo_pojasnilo">Aplikacija bo dostopala do lokacije samo enkrat, za avtomatsko zaznavo domače občine.</string>
     <string name="novi_primeri">Novi primeri:</string>
     <string name="st_novih_primerov"> </string>
     <string name="znak_pika">.</string>

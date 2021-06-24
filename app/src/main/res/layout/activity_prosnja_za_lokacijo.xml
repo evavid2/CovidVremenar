@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#87CEEB"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+    android:background="#87CEEB">
 
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/prosnja_za_lokacijo_vprasanje"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="280dp"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:paddingLeft="40dp"
+        android:paddingTop="280dp"
         android:paddingRight="40dp"
+        android:text="@string/prosnja_za_lokacijo_vprasanje"
         android:textColor="@color/black"
         android:textSize="21dp"
-        />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonDa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/rounded_corners"
-        android:text="DA"
-        android:paddingRight="5dp"
         android:paddingLeft="5dp"
-        />
+        android:paddingRight="5dp"
+        android:text="DA"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/buttonNe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
-        android:layout_marginLeft="240dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
         android:background="@drawable/rounded_corners"
-        android:text="NE"
-        android:paddingRight="5dp"
         android:paddingLeft="5dp"
-        />
-</RelativeLayout>
+        android:paddingRight="5dp"
+        android:text="NE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:text="@string/prosnja_za_lokacijo_pojasnilo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNe" />
+</androidx.constraintlayout.widget.ConstraintLayout>
