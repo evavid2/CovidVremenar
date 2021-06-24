@@ -16,4 +16,11 @@
     <string name="novi_primeri">Novi primeri:</string>
     <string name="st_novih_primerov"> </string>
     <string name="znak_pika">.</string>
+
+    <string name="cepljenje_datumpodatkov">Najnovejši podatki za dan:  </string>
+    <string name="cepljenje_danesprvi">Cepljenih s prvim odmerkom v dnevu: </string>
+    <string name="cepljenje_dodanesprvi">Vseh cepljenih s prvim odmerkom: </string>
+    <string name="cepljenje_danesdrugi">Cepljenih z drugim odmerkom v dnevu: </string>
+    <string name="cepljenje_dodanesdrugi">Vseh cepljenih z drugim odmerkom:</string>
+
 </resources>

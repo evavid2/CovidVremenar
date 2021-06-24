@@ -13,7 +13,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Cepljenih z drugim odmerkom v dnevu:"
+        android:text="@string/cepljenje_danesdrugi"
         app:layout_constraintBottom_toTopOf="@+id/txtDrugaDozaDoDanes"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -24,7 +24,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="24dp"
-        android:text="Vseh cepljenih z drugim odmerkom:"
+        android:text="@string/cepljenje_dodanesdrugi"
         app:layout_constraintBottom_toTopOf="@+id/GrafCepljenje"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -35,7 +35,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Vseh cepljenih s prvim odmerkom:"
+        android:text="@string/cepljenje_dodanesprvi"
         app:layout_constraintBottom_toTopOf="@+id/txtDrugaDozaDanes"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -85,7 +85,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Cepljenih s prvim odmerkom v dnevu:"
+        android:text="@string/cepljenje_danesprvi"
         app:layout_constraintBottom_toTopOf="@+id/txtPrvaDozaDoDanes"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -144,7 +144,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Najnovejši podatki za dan:  "
+        android:text="@string/cepljenje_datumpodatkov"
         app:layout_constraintBottom_toTopOf="@+id/txtPrvaDozaDanes"
         app:layout_constraintStart_toStartOf="parent" />
 
